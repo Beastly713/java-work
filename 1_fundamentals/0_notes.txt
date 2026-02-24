@@ -1,0 +1,138 @@
+1. A class is a user-defined data type that acts as a blueprint for creating objects, defining their state (fields) and behavior (methods).
+data type -> defines the kind of value a variable can hold, instructing the compiler or interpreter on how to interpret, store, and process that data
+object -> An instance of a class containing state (data) and behavior (methods)
+-> An instance is:
+A specific object created from a class/ A specific occurrence of a defined type that exists in memory
+It is an allocated structure in memory with actual values
+
+An object is:
+A concrete runtime instance of a class that occupies memory and contains actual state.
+It has:
+Allocated memory
+Concrete values in its fields
+Access to the class’s methods
+
+2. An access modifier controls the visibility and accessibility of classes, methods, and variables.
+
+4. The Java Virtual Machine (JVM) is a runtime environment that executes Java bytecode, providing platform independence.
+
+Simple explanation:
+You write Java code → .java
+Compiler converts it → bytecode (.class)
+JVM runs that bytecode
+
+5. A package is a folder-like structure/namespace that groups related classes together.
+
+6. 
+
+#
+a. main is the entry point of a Java application.
+The JVM starts execution here when you run a program.
+Without main, a class cannot be run directly as a standalone app.
+
+b. Compilation  does not depend on main
+Running (directly)  does depend on main
+
+c. A class without main is not a program.
+It is a tool / definition.
+Another class with main:
+creates objects of it
+calls its methods
+uses its fields
+so, Classes without main are compiled so runnable classes can use them at runtime.
+
+d. main must be public so the JVM can call it.
+The JVM is outside your class.
+It must be able to access and call main.
+If main is not public, the JVM cannot access it.
+
+e. NOTE :
+public is not for the compiler
+True — compiler can see everything during compilation.
+public is not about imports or function calls
+True — JVM isn’t “importing” code like Java source does.
+JVM can load non-public classes and methods
+True — loading ≠ invoking
+
+f. The JVM can see non-public methods
+But the Java launcher (runtime entry mechanism) requires main to be public to invoke it as an entry point
+This is an access-control rule enforced at runtime, not a visibility problem.
+
+JVM loads the class
+JVM looks up a method with this exact signature:
+public static void main(String[] args)
+If it exists but is not public → JVM refuses to invoke it
+
+public is required because the Java runtime only invokes main if it is public.
+This is a runtime entry-point rule, not a compiler or visibility limitation.
+
+g. Does a file with main have to be called main.java?
+NO
+main is just a method, not a class
+
+h. Can a Java file have only one public class?
+A .java file can contain:
+0 public classes, OR
+1 public class
+Never more than one
+
+If a Java file contains a public class, the file name must match that public class — regardless of main.
+
+i. Why Java “fixates” on the public class
+public means any code anywhere can reference it
+
+At first glance, Java’s strict filename = public class name rule feels like a rigid, arbitrary technicality. But it actually boils down to one massive priority for the language designers: compiler efficiency and speed.
+
+Here is the straightforward breakdown of why Java gets so fixated on this rule, and why it forces the "one public class per file" reality.
+
+1. The Compiler Needs a Map, Not a Scavenger Hunt
+When you compile a Java program, the compiler (javac) often encounters classes it hasn't compiled yet.
+
+Imagine you are compiling ClassA.java, and inside it, the code says:
+
+PublicClassB myObject = new PublicClassB();
+
+The compiler needs to know what PublicClassB is to ensure you are using it correctly. To do this, it needs to find either PublicClassB.class (if it's already compiled) or PublicClassB.java (to compile it on the spot).
+
+If the rule exists: The compiler knows exactly where to look. It just asks the operating system, "Hey, do you have a file named PublicClassB.java or PublicClassB.class in this directory/classpath?" That’s an instant, $O(1)$ lookup.
+If the rule didn't exist: The compiler would have no idea which file contains PublicClassB. It would have to open, read, and parse every single .java file in your entire project just to find that one class. In a massive enterprise application with thousands of files, compiling would take forever.
+Because public classes can be accessed from anywhere (other packages, other projects), the compiler needs a lightning-fast, guaranteed way to locate them. Tying the class name to the file name provides that exact mapping.
+
+2. Why This Leads to Only One Public Class Per File
+This is pure logic stemming from the first rule.
+
+If the rule is: "The file name must exactly match the name of the public class inside it"...
+
+Then what happens if you put public class Dog and public class Cat inside the same file?
+
+You can't name the file Dog.java because then the compiler wouldn't be able to find Cat. You can't name it Cat.java because it wouldn't find Dog. And you certainly can't name it DogAndCat.java because neither public class matches that name.
+
+Because a single file can only have one name, it can only host one public class that matches that name.
+
+3. Why Non-Public Classes Get a Pass
+If you have a class without the public modifier (meaning it has "package-private" or default access), it can only be accessed by other classes within the exact same package (directory).
+
+Because the scope is so small, the compiler's job is easy. It only has to look at the handful of files in that specific folder to find what it needs. It doesn't need to search the entire application, so Java relaxes the strict naming rule. You can stuff as many package-private classes into a file as you want.
+
+
+
+7. main method
+public static void main(String[] args) {
+    // code starts executing from here
+}
+
+public -> Java can access this method from anywhere
+static -> Java can run this method without creating an object
+void -> this method returns nothing
+main -> keyword
+String[] args -> Used to receive input from the command line -> Java requires this parameter to start the program
+
+8. A variable is a symbolic name associated with a memory location whose contents may change during execution.
+
+primitive data types : int, double, boolean
+
+A string is a finite, ordered sequence of characters represented according to a character encoding scheme and treated as a single data value by a programming language.
+- String data type - capital S 
+- always use double quotes ""
+
+9. Control flow - same as c++
