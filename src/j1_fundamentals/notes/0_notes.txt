@@ -30,6 +30,28 @@ Instance
 - A specific occurrence of a defined type in memory.
 - An allocated structure with real values.
 
+
+NOTE :
+We use “instance” when we want to emphasize the relationship between an object and its class.
+“Object” tells you what it is
+“Instance” tells you where it came from
+
+Object
+A general term for something that exists in memory.
+Example:
+x = 5
+
+Instance
+Used specifically to say:
+This object was created from this class.
+
+Example:
+car1 = Car("Toyota", "Red")
+We say:
+car1 is an object
+car1 is an instance of Car
+The word instance highlights the class relationship.
+
 Relationship:
 Class → Blueprint
 Object → Built structure
@@ -94,6 +116,25 @@ a. Entry Point
 - main is the entry point of a Java application.
 - The JVM starts execution from this method.
 - Without main, a class cannot run directly as a standalone program.
+
+The program starts from the main method.
+Not from the class itself.
+
+What Actually Happens When You Run a Java Program
+When you run:
+java Main
+
+The JVM:
+Looks for the class named Main
+Loads that class into memory
+Searches for this exact method signature:
+public static void main(String[] args)
+
+Executes that method
+
+So:
+The class is located first
+The main method is the true entry point
 
 --------------------------------------------------
 
@@ -286,3 +327,88 @@ Conceptually similar to C++.
 - JVM runs bytecode, not source
 - main is required only for direct execution
 - Compilation and runtime are separate phases
+
+--------------------------------------------------
+
+12. Should the class containing the main method:
+
+a. have the 'Main' as the name?
+- NO it can differ
+
+b. has public as the access modifier?
+- The main method itself MUST be public
+
+-Case 1: Controller / Runner in a different package
+Example:
+
+test.a.App
+test.b.Main
+test.c.Runner
+package test.c;
+
+import test.a.App;
+import test.b.Main;
+
+If access modifier is not public → errors
+
+import test.a.App; requires App to be public
+Package-private classes are invisible outside their package
+
+Case 2: Runner and target class in the SAME package
+
+Example:
+
+test.a.App
+test.a.Runner
+package test.a;
+
+class App {   // package-private
+    public static void main(String[] args) { }
+}
+package test.a;
+
+public class Runner {
+    public static void main(String[] args) {
+        App.main(args);
+    }
+}
+This works
+Because:
+Same package → package-private access is allowed
+No import visibility issue
+
+Case 3: Running directly with java test.a.App
+javac test/a/App.java
+java test.a.App
+
+The class is found on the classpath
+The main method is public
+
+package test.a;
+
+class App {   // NOT public
+    public static void main(String[] args) {
+        System.out.println("Works");
+    }
+}
+
+Conclusion:
+
+| Scenario                            | Class must be `public`? | Why                             |
+| ----------------------------------- | ----------------------- | ------------------------------- |
+| Run directly with `java test.a.App` |  No                    | JVM only requires `public main` |
+| Accessed from another package       |  Yes                   | Package visibility rules        |
+| Accessed from same package          |  No                    | Package-private allowed         |
+| Imported (`import test.a.App`)      |  Yes                   | Imports require public          |
+
+
+13. For running the file:
+
+compilation : javac a/b/c/file-name.java
+run : java a.b.c.class-name
+
+in compilation
+file-name means the file containing all the code/classes
+
+during run
+class-name means the class containing the public static void main(String[] args)

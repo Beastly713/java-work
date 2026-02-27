@@ -1,1 +1,1 @@
-package src.j1_fundamentals.variables;
+package j1_fundamentals.variables;
