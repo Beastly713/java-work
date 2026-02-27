@@ -1,0 +1,288 @@
+========================
+Java Core Concepts
+========================
+
+1. Class, Object, Instance
+
+Class
+- A class is a user-defined data type.
+- It acts as a blueprint for creating objects.
+- It defines:
+  - State → fields (variables)
+  - Behavior → methods (functions)
+
+Data Type
+- A data type defines the kind of value a variable can hold.
+- It tells the compiler:
+  - How to interpret the data
+  - How much memory to allocate
+  - What operations are allowed
+
+Object
+- An object is a concrete runtime instance of a class.
+- It contains:
+  - Allocated memory
+  - Actual values in its fields
+  - Access to the class’s methods
+
+Instance
+- A specific object created from a class.
+- A specific occurrence of a defined type in memory.
+- An allocated structure with real values.
+
+Relationship:
+Class → Blueprint
+Object → Built structure
+Instance → The actual built structure in memory
+
+--------------------------------------------------
+
+2. Access Modifiers
+
+Definition:
+- An access modifier controls visibility and accessibility of:
+  - Classes
+  - Methods
+  - Variables
+
+Common access levels:
+- public → accessible everywhere
+- private → accessible only within the same class
+- default (no modifier) → accessible within the same package
+- protected → accessible within package + subclasses
+
+Access modifiers enforce encapsulation and control interaction.
+
+--------------------------------------------------
+
+3. Java Virtual Machine (JVM)
+
+Definition:
+- The JVM is the runtime environment that executes Java bytecode.
+- It provides platform independence.
+
+Execution process:
+You write code → .java file
+Compiler (javac) converts → bytecode (.class file)
+JVM runs the bytecode
+
+Key idea:
+- Java is compiled once.
+- Bytecode runs anywhere a JVM exists.
+
+--------------------------------------------------
+
+4. Package
+
+Definition:
+- A package is a namespace that groups related classes.
+- It organizes code and prevents naming conflicts.
+
+Key rule:
+- Package name must match folder structure after source root.
+
+Purpose:
+- Organization
+- Modularity
+- Access control
+
+--------------------------------------------------
+
+5. main Method and Program Entry
+
+a. Entry Point
+- main is the entry point of a Java application.
+- The JVM starts execution from this method.
+- Without main, a class cannot run directly as a standalone program.
+
+--------------------------------------------------
+
+b. Compilation vs Execution
+
+- Compilation does NOT depend on main.
+- Running directly DOES depend on main.
+
+Classes without main:
+- Are compiled normally.
+- Can be used by other classes.
+- Are definitions/tools, not standalone programs.
+
+--------------------------------------------------
+
+c. Why main Must Be public
+
+- The JVM is outside your class.
+- It must access and invoke main.
+- If main is not public → JVM refuses to invoke it.
+
+Important distinction:
+- public is NOT for the compiler.
+- The compiler sees everything during compilation.
+- public is an access-control rule enforced at runtime.
+
+--------------------------------------------------
+
+d. JVM Behavior at Runtime
+
+JVM:
+1. Loads the class.
+2. Searches for this exact method signature:
+
+public static void main(String[] args)
+
+If:
+- Method exists AND is public → runs.
+- Method exists but not public → refuses to invoke.
+
+This is a runtime entry-point rule.
+
+--------------------------------------------------
+
+e. Does File Name Have to Be main.java?
+
+NO.
+
+- main is a method.
+- File name must match the public class name, not the main method.
+
+Example:
+public class MyApp {
+    public static void main(String[] args) {}
+}
+
+File name must be:
+MyApp.java
+
+--------------------------------------------------
+
+f. Public Class Rule
+
+A .java file can contain:
+- 0 public classes
+- OR 1 public class
+- Never more than one
+
+If a file contains a public class:
+- The file name MUST match that public class.
+
+--------------------------------------------------
+
+g. Why Java Enforces "One Public Class Per File"
+
+Reason: Compiler efficiency and deterministic lookup.
+
+Compiler behavior:
+- When compiling ClassA.java and encountering:
+  PublicClassB obj = new PublicClassB();
+
+- Compiler must locate PublicClassB.
+
+If filename = public class name:
+- Compiler directly checks:
+  PublicClassB.java or PublicClassB.class
+- O(1) lookup.
+
+If no rule existed:
+- Compiler would need to scan all files.
+- Compilation would be slow in large projects.
+
+Therefore:
+Filename = public class name
+→ Guarantees fast lookup.
+
+--------------------------------------------------
+
+h. Why Non-Public Classes Don’t Require Matching Filename
+
+- Non-public (package-private) classes:
+  - Accessible only within the same package.
+- Compiler only searches within that directory.
+- No global lookup required.
+
+Therefore:
+- Multiple non-public classes can exist in one file.
+
+--------------------------------------------------
+
+6. main Method Structure
+
+public static void main(String[] args) {
+    // execution starts here
+}
+
+Components:
+- public → JVM must access it
+- static → no object required
+- void → returns nothing
+- main → required method name
+- String[] args → receives command-line arguments
+
+Signature must match exactly.
+
+--------------------------------------------------
+
+7. Variables
+
+Definition:
+- A variable is a symbolic name associated with a memory location.
+- Its value may change during execution.
+
+--------------------------------------------------
+
+8. Data Types
+
+Primitive types:
+- int
+- double
+- boolean
+- char
+- etc.
+
+Primitive types:
+- Store actual values directly.
+- Have fixed memory size.
+
+--------------------------------------------------
+
+9. String
+
+Definition:
+- A String is a finite, ordered sequence of characters.
+- Represented using a character encoding.
+- Treated as a single object in Java.
+
+Rules:
+- Capital S → String
+- Use double quotes:
+  "Hello"
+
+Example:
+String name = "Alice";
+
+--------------------------------------------------
+
+10. Control Flow
+
+Definition:
+- Control flow determines the order of execution.
+
+Includes:
+- if / else
+- switch
+- loops (for, while, do-while)
+- break / continue
+
+Conceptually similar to C++.
+
+--------------------------------------------------
+
+11. Core Mental Model Summary
+
+- Class = Blueprint
+- Object = Runtime instance
+- Package = Namespace
+- Source root = Where packages begin
+- public class → filename must match
+- JVM runs bytecode, not source
+- main is required only for direct execution
+- Compilation and runtime are separate phases

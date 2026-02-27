@@ -1,0 +1,179 @@
+========================
+Java File & Project Structure
+========================
+
+1. Java files vs folders
+- Folders on disk are NOT Java packages by default.
+- Java only treats folders as packages if a source root is defined.
+- Folder structure is used to MAP package names, not define them automatically.
+
+--------------------------------------------------
+
+2. Package (core rule)
+- A package is a logical namespace, not just a folder.
+- Package name determines the fully qualified class name.
+
+Example:
+package a.b.c;
+
+→ Full class name: a.b.c.ClassName
+
+--------------------------------------------------
+
+3. Source Root (MOST IMPORTANT CONCEPT)
+
+Definition:
+- The source root is the folder where Java starts interpreting package names.
+
+Rule:
+- Package name = folder path AFTER the source root.
+
+Example:
+Source root: src
+File path: src/a/b/c/Main.java
+
+Valid package:
+package a.b.c;
+
+--------------------------------------------------
+
+4. What happens if no source root is defined?
+
+- Java does NOT guess project structure.
+- If Java is not told the source root:
+  → It assumes the compilation starts from the current directory.
+  → That directory becomes the source root.
+- If a file is treated as being in the source root:
+  → Java expects NO package (default package).
+
+Default package:
+- A class with NO package declaration.
+- Valid, but discouraged in real projects.
+
+--------------------------------------------------
+
+5. Why package errors happen
+
+Package error occurs when:
+- Declared package ≠ folder path relative to source root.
+
+Example error cause:
+File location:
+j1_fundamentals/hello_world/Main.java
+
+Declared package:
+package j1_fundamentals.hello_world;
+
+But Java thinks source root = hello_world
+→ Expected package: ""
+→ Mismatch → error
+
+--------------------------------------------------
+
+6. How Java gets told the source root
+
+Java ONLY knows the source root if one of these happens:
+
+1. Compilation is run from the correct parent directory
+2. IDE marks a folder as a source root
+3. A build tool (Maven / Gradle) defines it
+
+Otherwise → default package is assumed.
+
+--------------------------------------------------
+
+7. IDE behavior (VS Code)
+
+- VS Code is not a Java-native IDE.
+- It tries to infer source roots automatically.
+- Different folders can be inferred inconsistently.
+- This can cause package errors even if code is correct.
+
+Fix:
+- Explicitly mark the source root
+- OR configure it manually
+
+Example VS Code config:
+.vscode/settings.json
+
+{
+  "java.project.sourcePaths": [
+    "j1_fundamentals"
+  ]
+}
+
+--------------------------------------------------
+
+8. Naming rules for packages
+
+- Package names must:
+  - Start with a letter
+  - Be lowercase by convention
+- Digits allowed, but NOT at the start.
+
+Valid:
+j1_fundamentals
+control_flow
+
+Invalid:
+1_fundamentals
+MyPackage
+
+--------------------------------------------------
+
+9. Do Java files need folders?
+
+- NO, if there is no package.
+- YES, if a package is declared.
+
+Rule:
+- No package → file can live directly in source root.
+- Package declared → folders must exist to represent it.
+
+Folders exist ONLY to represent package names.
+
+--------------------------------------------------
+
+10. Multiple source roots
+
+- Yes, a project can have multiple source roots.
+- Each source root is an independent package starting point.
+
+Example:
+{
+  "java.project.sourcePaths": [
+    "j1_fundamentals",
+    "j2_intermediate"
+  ]
+}
+
+Better practice:
+- One source root (e.g. src/)
+- Multiple packages inside it.
+
+--------------------------------------------------
+
+11. Recommended learning structure
+
+For learning:
+- Use folders for organization.
+- Avoid packages until fundamentals are clear.
+
+For clean setup:
+java-work/
+└── src/
+    ├── j1_fundamentals/
+    ├── j2_intermediate/
+    └── j3_advanced/
+
+Source root:
+src/
+
+--------------------------------------------------
+
+12. One-line rules to remember
+
+- Java packages start at the source root, not the project folder.
+- Java does not guess structure; it follows explicit rules.
+- Package name must match folder path AFTER source root.
+- Java is consistent; tooling guesses are not.
